@@ -62,6 +62,7 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      isMoveListFlipped: false
     }
   }
 
@@ -97,23 +98,38 @@ class Game extends React.Component {
     });
   }
 
+  flipMoveListOrder(isFlipped = false) {
+    this.setState({
+      isMoveListFlipped: !this.state.isMoveListFlipped
+    });
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-    console.log("Move locations:", current.locations);
 
+    // console.l
 
     const moves = history.map((step, move) => {
-      const desc = move ?
+      const moveJumpDescription = move ?
         'Go to move #'  + move + ' (' + step.locations[move - 1].column + ',' + step.locations[move - 1].row + ')':
         'Go to game start';
 
-      
+      if (move !== history.length - 1) {
+        return (
+          <li key={move}>
+            <button onClick={() => this.jumpTo(move)}>{moveJumpDescription}</button>
+          </li>
+        );
+      }
+
       return (
-        <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
+        <strong key={move}>
+          <li>
+            <button onClick={() => this.jumpTo(move)}>{moveJumpDescription}</button>
+          </li>
+        </strong>
       );
     });
 
@@ -123,6 +139,11 @@ class Game extends React.Component {
     }  else {
       status = 'Next player ' + (this.state.xIsNext ? 'X' : 'O');
     }
+
+    const movesListFlipDescription = 'Flip Moves Order';
+    const movesListFlipStatus = 'Sort Order: ' + (this.state.isMoveListFlipped ? 'Descending' : 'Ascending');
+
+    console.log('Is moves list flipped:', this.state.isMoveListFlipped);
 
     return (
       <div className="game">
@@ -134,7 +155,15 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <div>
+            <button onClick={() => this.flipMoveListOrder(this.state.isMoveListFlipped)}>
+              {movesListFlipDescription}
+            </button>
+            <p>
+              {movesListFlipStatus}
+            </p>
+          </div>
+          <ol>{this.state.isMoveListFlipped ? moves.slice().reverse() : moves}</ol>
         </div>
       </div>
     );

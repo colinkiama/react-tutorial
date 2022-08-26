@@ -7,10 +7,6 @@ ol, ul {
   padding-left: 30px;
 }
 
-ol li:last-child {
-  font-weight: bold;
-}
-
 .board-row:after {
   clear: both;
   content: "";
