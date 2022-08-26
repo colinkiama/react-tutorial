@@ -111,6 +111,7 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const isBoardFilled = checkIfAllSquaresFilled(current.squares);
 
     const moves = history.map((step, move) => {
       const moveJumpDescription = move ?
@@ -134,10 +135,14 @@ class Game extends React.Component {
       );
     });
 
+
+
     let status;
     if (winner) {
       status = 'Winner: ' + winner.player;
-    }  else {
+    } else if (checkIfAllSquaresFilled(current.squares)) {
+      status = 'Draw: No Winner'
+    } else {
       status = 'Next player ' + (this.state.xIsNext ? 'X' : 'O');
     }
 
@@ -196,4 +201,13 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function checkIfAllSquaresFilled(squares) {
+  // - A non-blank string is a truthy value
+  // - !!i was used to force the truthiness out of the string.
+  //   The square refused to map to true in Firefox when using i => i == true.
+  // - The reduce function applys performs an AND operation to all the boolean
+  //   sqaure values in the list.
+  return squares.map(i => !!i == true).reduce((i, j) => i && j, true);
 }
