@@ -203,11 +203,8 @@ function calculateWinner(squares) {
   return null;
 }
 
-function checkIfAllSquaresFilled(squares) {
-  // - A non-blank string is a truthy value
-  // - !!i was used to force the truthiness out of the string.
-  //   The square refused to map to true in Firefox when using i => i == true.
-  // - The reduce function applys performs an AND operation to all the boolean
-  //   sqaure values in the list.
-  return squares.map(i => !!i == true).reduce((i, j) => i && j, true);
-}
+// A non-blank string is a truthy value
+// !!i was used to force the truthiness out of the string.
+// The square refused to map to true in Firefox when using i => i == true.
+const checkIfAllSquaresFilled = (squares) => squares.every(i => !!i);
+
