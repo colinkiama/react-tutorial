@@ -140,7 +140,7 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = 'Winner: ' + winner.player;
-    } else if (checkIfAllSquaresFilled(current.squares)) {
+    } else if (isBoardFilled) {
       status = 'Draw: No Winner'
     } else {
       status = 'Next player ' + (this.state.xIsNext ? 'X' : 'O');
